@@ -1,0 +1,24 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import { getPosts, getPost } from '@/lib/microcms'
+
+// getStaticPaths() で 全記事のslugリスト を返す。ビルド時に blog/slug ごとのHTMLを生成できる
+export async function getStaticPaths() {
+  const posts = await getPosts()
+  return posts.map(post => ({
+    params: { slug: post.slug }
+  }))
+}
+
+// ビルド時に slug ごとの記事を取得
+const { slug } = Astro.params
+const post = await getPost(slug)
+---
+
+<Layout title={post.title}>
+  <article>
+    <h1>{post.title}</h1>
+    <img src={post.eyecatch?.url} alt="" />
+    <div innerHTML={post.body} />
+  </article>
+</Layout>

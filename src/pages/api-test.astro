@@ -1,0 +1,16 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import { getPosts } from '@/lib/microcms';
+
+const posts = await getPosts()
+---
+
+<Layout title="ブログ一覧">
+  <h1>microCMS接続テスト</h1>
+  <pre>{JSON.stringify(posts, null, 2)}</pre>
+  <ul>
+    {posts.map(post => (
+      <li><a href={`/blog/${post.slug}`}>{post.title}</a></li>
+    ))}
+  </ul>
+</Layout>
